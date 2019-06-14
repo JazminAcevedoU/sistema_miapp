@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Lista de Usuarios</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <style>
+        table, td{
+            border:2px solid blue;
+            border-collapse: collapse;
+        }
+    </style>
+    <body>
+        <h1>Lista de Usuarios </h1>
+        <button onclick="getUsers()">Listar usuarios</button>
+        <button onclick="getUser(1)">Detalle de usuario 1</button>
+        <button onclick="createUser()">Crear usuario</button>
+        <button onclick="updateUser()">Actualizar usuario 4</button>        
+        <button onclick="removeUser()">Eliminar usuario</button> 
+
+        <table id="usuarios">
+            <tr>
+                <th></th>
+            </tr>
+        </table> 
+
+        <script
+        src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script>
+            let selectUsuario = document.getElementById("usuarios");
+            /*$.ajax({
+                url: "http://localhost:8080/miApp/usuario",
+                success: function (data, textStatus, jqXHR) {
+                    let opciones = "";
+                    var resultado = JSON.parse(data);
+                    console.log(resultado);
+
+                    for (var i = 0; i < resultado.length; i++) {
+                        opciones += `<tr><td value ="` + resultado[i].id + `">` + resultado[i].usuario + `</td></tr>`;
+                    }
+                    selectUsuario.innerHTML = opciones;
+
+                }
+
+            }
+            );*/
+    
+    function getUsers(){
+                $.ajax({
+                    url: "http://localhost:8080/miApp/usuario",
+                    type: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("Listado de usuarios");
+                        data.forEach(user => {
+                            console.log(user);
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error(jqXHR)
+                    }
+                });                
+            }
+            
+            function getUser(id){
+                $.ajax({
+                    url: "http://localhost:8080/miApp/usuario/" + id,
+                    type: 'GET',
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("Detalle de usuario");
+                        console.log(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error(jqXHR)
+                    }
+                });                
+            }
+    
+    function createUser() {
+                $.ajax({
+                    url: "http://localhost:8080/miApp/usuario",
+                    data: JSON.stringify({
+                        usuario: Math.round(Math.random() * (1000 - 1) + 1).toString(),
+                        pass: Math.round(Math.random() * (1000 - 1) + 1).toString(),
+                        rol: {
+                            id: 1
+                        }
+                    }),
+                    dataType: 'JSON',
+                    type: 'POST',
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("Crear de usuario");
+                        console.log(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error(errorThrown)
+                    }
+                });
+            }
+            function updateUser(){
+                $.ajax({
+                    url: "http://localhost:8080/miApp/usuario",
+                    data: JSON.stringify({
+                        id: 4,
+                        usuario: Math.round(Math.random() * (1000 - 1) + 1).toString(),
+                        pass: Math.round(Math.random() * (1000 - 1) + 1).toString(),
+                        rol: {
+                            id: 1
+                        }
+                    }),
+                    dataType: 'JSON',
+                    type: 'PUT',
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("Actualizar usuario");
+                        console.log(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error(errorThrown)
+                    }
+                });                
+            }
+            
+            function removeUser(){
+                $.ajax({
+                    url: "http://localhost:8080/miApp/usuario/444,55,6",
+                    type: 'DELETE',
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("Eliminar usuarios");
+                        console.log(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error(errorThrown)
+                    }
+                });                
+            }
+            
+        </script>
+
+
+    </body>
+</html>
